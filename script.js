@@ -1,6 +1,6 @@
 
 // Typing Effect
-function typeEffect(element, text, typingSpeed = 150) {
+function typeEffect(element, text, typingSpeed = 100, breakTime = 2000) {
     let index = 0;
 
     function type() {
@@ -8,13 +8,23 @@ function typeEffect(element, text, typingSpeed = 150) {
             element.textContent += text.charAt(index);
             index++;
             setTimeout(type, typingSpeed);
+        } else {
+            setTimeout(resetAndType, breakTime);
         }
+    }
+
+    function resetAndType() {
+        element.textContent = ''; 
+        index = 0; 
+        type(); 
     }
 
     type();
 }
+
 const nameElement = document.getElementById('my-name');
 typeEffect(nameElement, 'Soniya Rawat');
+
 
 
 
@@ -28,7 +38,6 @@ for (var i = 0; i < navMenuAnchorTags.length; i++) {
         console.log(this.textContent);
         var targetSection = document.getElementById(targetSectionID);
         console.log(targetSection);
-        //    interval = setInterval(scrollVertically, 20, targetSection);
 
         interval = setInterval(function () {
             scrollVertically(targetSection);
@@ -56,6 +65,8 @@ document.getElementById('contact-form').addEventListener('submit', function(even
     emailjs.sendForm('service_rz6c986', 'template_4nkkjgi', this)
         .then(function() {
             alert('Message sent successfully!');
+            document.getElementById('contact-form').reset(); 
+
         })
         .catch(function(error) {
             alert('Failed to send the message, please try again.');
