@@ -21,7 +21,6 @@ function typeEffect(element, text, typingSpeed = 100, breakTime = 2000) {
 
     type();
 }
-
 const nameElement = document.getElementById('my-name');
 typeEffect(nameElement, 'Soniya Rawat');
 
@@ -31,13 +30,17 @@ typeEffect(nameElement, 'Soniya Rawat');
 var navMenuAnchorTags = document.querySelectorAll('.nav-menu a');
 var interval;
 
+// Smooth Scrolling
+var navMenuAnchorTags = document.querySelectorAll('.nav-menu a');
+var interval;
+var isAutoScrolling = false;
+
 for (var i = 0; i < navMenuAnchorTags.length; i++) {
     navMenuAnchorTags[i].addEventListener('click', function (event) {
         event.preventDefault();
+        isAutoScrolling = true;
         var targetSectionID = this.textContent.trim().toLowerCase();
-        console.log(this.textContent);
         var targetSection = document.getElementById(targetSectionID);
-        console.log(targetSection);
 
         interval = setInterval(function () {
             scrollVertically(targetSection);
@@ -45,17 +48,19 @@ for (var i = 0; i < navMenuAnchorTags.length; i++) {
     });
 }
 
-
 function scrollVertically(targetSection) {
     var targetSectionCoordinates = targetSection.getBoundingClientRect();
-    if (targetSectionCoordinates.top <= 0) {
+    if (targetSectionCoordinates.top <= 0 || !isAutoScrolling) {
         clearInterval(interval);
+        isAutoScrolling = false;
         return;
     }
     window.scrollBy(0, 50);
 }
 
-
+window.addEventListener('wheel', function() {
+    isAutoScrolling = false;
+})
 // EmailJS Integration
 emailjs.init("7aJHOiPXqFWxc8qQJ"); 
 
